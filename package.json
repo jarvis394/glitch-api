@@ -5,6 +5,7 @@
   "main": "src/index",
   "scripts": {
     "start": "gitbook serve",
+    "test": "jest tests/ --verbose",
     "docs:prepare": "gitbook install",
     "docs:api": "jsdoc2md --partial tools/docs/header --global-index-format none --files src/*/*  > docs/api.md",
     "docs:build": "npm run docs:prepare && npm run docs:api && gitbook build",
@@ -15,7 +16,7 @@
     "node-fetch": "^2.6.0"
   },
   "engines": {
-    "node": "12.x"
+    "node": ">=8.0.0"
   },
   "homepage": "https://glapi.glitch.me",
   "repository": {
