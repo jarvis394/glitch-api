@@ -24,9 +24,9 @@ class Projects {
    * Gets project by id or domain
    *
    * @param {Object} params 
-   * @param {string} [params.id]
-   * @param {string} [params.domain]
-   */
+   * @param {string} params.id
+   * @param {string} arams.domain
+h  */
   async get(params) {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))
 
@@ -95,3 +95,4 @@ class Projects {
 }
 
 module.exports = Projects
+l

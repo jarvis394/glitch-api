@@ -3,6 +3,6 @@
   "root":      "./docs",
   "structure": { 
     "readme":  "intro.md",
-    "summary": "toc.md" 
+    "summary": "README.md" 
   }
 }

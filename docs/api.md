@@ -162,7 +162,8 @@ Gets project by id or domain
 | Param | Type |
 | --- | --- |
 | params | <code>Object</code> | 
-| [params.id|params.domain] | <code>string</code> | 
+| params.id | <code>string</code> | 
+| params.domain | <code>string</code> | 
 
 <a name="Projects+search"></a>
 
@@ -243,6 +244,7 @@ Gets project by url
 | --- | --- |
 | params | <code>Object</code> | 
 | params.url | <code>string</code> | 
+| params.id | <code>string</code> | 
 
 <a name="Teams+search"></a>
 
@@ -286,7 +288,8 @@ Gets user by id or login
 | Param | Type |
 | --- | --- |
 | params | <code>Object</code> | 
-| [params.id|params.login] | <code>string</code> \| <code>number</code> | 
+| params.id | <code>number</code> | 
+| params.login | <code>string</code> | 
 
 <a name="Users+search"></a>
 
