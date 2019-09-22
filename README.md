@@ -2,7 +2,7 @@
 
 A Node.js module that allows you to easily interact with the Glitch API
 
-| 📖 [Documentation](https://github.com/jarvis394/glitch-api/tree/master/docs/) | ✨ [Examples](https://github.com/jarvis394/glitch-api/tree/master/docs/examples/) |
+| 📖 [Documentation](https://github.com/jarvis394/glitch-api/tree/master/docs/) | ✨ [Examples](https://github.com/jarvis394/glitch-api/tree/master/examples/) |
 |---|---|
 
 ## Features
