@@ -24,7 +24,8 @@ class Users {
    * Gets user by id or login
    *
    * @param {Object} params 
-   * @param {string|number} [params.id|params.login] 
+   * @param {number} [params.id]
+   * @param {string} [params.loign]
    */
   async get(params) {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))
@@ -32,6 +33,10 @@ class Users {
     const user = await this._api.enqueue(`users/by/${param}`, params, {
       method: 'GET'
     })
+
+    if (Object.keys(user).length === 0) {
+      return null
+    }
     
     return new User(user[params[param]])
   }
@@ -47,6 +52,10 @@ class Users {
       method: 'GET',
       oldApi: true
     })
+
+    if (users.length === 0) {
+      return null
+    }
     
     return users.map(user => new User(user))
   }

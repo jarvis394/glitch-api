@@ -1,7 +1,8 @@
 const Team = require('../structures/Team')
 
 const getParams = [
-  'url'
+  'url',
+  'id'
 ]
 
 /**
@@ -23,14 +24,23 @@ class Teams {
    * Gets project by url
    *
    * @param {Object} params 
-   * @param {string} params.url 
+   * @param {string} [params.url]
+   * @param {string} [params.id]
    */
   async get(params) {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))
+
+    if (!param) {
+      throw new Error('No parameter provided, supported: ' + getParams)
+    }
     
     const team = await this._api.enqueue(`teams/by/${param}`, params, {
       method: 'GET'
     })
+
+    if (Object.keys(team).length === 0) {
+      return null
+    }
     
     return new Team(team[params[param]])
   }
@@ -46,6 +56,10 @@ class Teams {
       method: 'GET',
       oldApi: true
     })
+
+    if (teams.length === 0) {
+      return null
+    }
     
     return teams.map(team => new Team(team))
   }
