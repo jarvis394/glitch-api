@@ -2,11 +2,11 @@
 
 A Node.js module that allows you to easily interact with the Glitch API
 
-| 📖 [Documentation](https://github.com/jarvis394/glitch-api/tree/master/docs/) | ✨ [Examples](https://github.com/jarvis394/glitch-api/tree/master/examples/) |
+| 📖 [Documentation](https://github.com/jarvis394/glitch-api/tree/master/docs/) | ✨ [Examples](https://github.com/jarvis394/glitch-api/tree/master/docs/examples/) |
 |---|---|
 
 ## Features
-- 100% coverage of the **known** Glitch API
+- 99% coverage of the **known** Glitch API
 - Support for authorization
 - Class abstraction
 - Works with both API versions
@@ -14,7 +14,7 @@ A Node.js module that allows you to easily interact with the Glitch API
 ###### *Warning: this module uses unstable API that hasn't been officially released yet. Described only world-open methods from [this unofficial site](https://glitchapi.glitch.me) and my researches*
 
 ## Installation
-> **[Node.js](https://nodejs.org/) 12.0.0 or newer is required**  
+> **[Node.js](https://nodejs.org/) 8.0.0 or newer is required**  
 
 ### NPM
 ```

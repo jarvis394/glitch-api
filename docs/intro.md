@@ -6,7 +6,7 @@ A Node.js module that allows you to easily interact with the Glitch API
 |---|---|
 
 ## Features
-- 100% coverage of the **known** Glitch API
+- 99% coverage of the **known** Glitch API
 - Support for authorization
 - Class abstraction
 - Works with both API versions
