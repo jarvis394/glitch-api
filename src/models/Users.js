@@ -24,8 +24,8 @@ class Users {
    * Gets user by id or login
    *
    * @param {Object} params 
-   * @param {number} [params.id]
-   * @param {string} [params.loign]
+   * @param {number} params.id
+   * @param {string} params.login
    */
   async get(params) {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))

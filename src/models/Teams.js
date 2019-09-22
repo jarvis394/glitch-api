@@ -24,8 +24,8 @@ class Teams {
    * Gets project by url
    *
    * @param {Object} params 
-   * @param {string} [params.url]
-   * @param {string} [params.id]
+   * @param {string} params.url
+   * @param {string} params.id
    */
   async get(params) {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))
