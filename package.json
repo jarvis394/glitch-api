@@ -1,6 +1,6 @@
 {
   "name": "glitch-api",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Library for using Glitch API ⚙️",
   "main": "src/index",
   "scripts": {
