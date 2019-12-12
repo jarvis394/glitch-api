@@ -3,7 +3,14 @@
  *
  * @class
  */
-class Request {
+export default class Request {
+  method: string
+  params: Record<string, any>
+  requestParams: Record<string, any>
+  promise: Promise<any>
+  resolve: (value?: any) => void
+  reject: (reason?: any) => void
+
   /**
    * Request constructor
    *
@@ -11,7 +18,7 @@ class Request {
    * @param {Object} params Parameters for method
    * @param {Object} requestParams Parameters for request
    */
-	constructor(method, params = {}, requestParams) {
+	constructor(method: string, params: Record<string, any> = {}, requestParams: Record<string, any>) {
 		this.method = method
 		this.params = { ...params }
     this.requestParams = requestParams || { method: 'GET' }
@@ -22,5 +29,3 @@ class Request {
 		})
 	}
 }
-
-module.exports = Request

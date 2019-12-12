@@ -1,4 +1,5 @@
-const Team = require('../structures/Team')
+import API from "./API"
+import Team from '../structures/Team'
 
 const getParams = [
   'url',
@@ -10,7 +11,9 @@ const getParams = [
  *
  * @class
  */
-class Teams {
+export default class Teams {
+  _api: API
+
   /**
    * Teams constructor
    *
@@ -51,7 +54,7 @@ class Teams {
    * @param {Object} params 
    * @param {string} params.q Query
    */
-  async search(params) {
+  async search(params: { q: string }) {
     const teams = await this._api.enqueue('teams/search', params, {
       method: 'GET',
       oldApi: true
@@ -64,5 +67,3 @@ class Teams {
     return teams.map(team => new Team(team))
   }
 }
-
-module.exports = Teams

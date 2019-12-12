@@ -1,4 +1,6 @@
-const Project = require('../structures/Project')
+import API from "./API"
+
+import Project from '../structures/Project'
 
 const getParams = [
   'id',
@@ -10,13 +12,15 @@ const getParams = [
  *
  * @class
  */
-class Projects {
+export default class Projects {
+  _api: API
+
   /**
    * Projects constructor
    *
    * @param {API} api API instance
    */
-  constructor(api) {
+  constructor(api: API) {
     this._api = api
   }
   
@@ -27,14 +31,14 @@ class Projects {
    * @param {string} [params.id]
    * @param {string} [params.domain]
    */
-  async get(params) {
+  async get(params: Partial<{ id: number | string, domain: string }>): Promise<Project | null> {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))
 
     if (!param) {
       throw new Error('No parameter provided, supported: ' + getParams)
     }
     
-    const project = await this._api.enqueue(`projects/by/${param}`, params, {
+    const project: Project = await this._api.enqueue(`projects/by/${param}`, params, {
       method: 'GET'
     })
 
@@ -42,6 +46,7 @@ class Projects {
       return null
     }
     
+    // @ts-ignore
     return new Project(project[params[param]])
   }
   
@@ -51,7 +56,7 @@ class Projects {
    * @param {Object} params 
    * @param {string} params.q Query
    */
-  async search(params) {
+  async search(params: { q: string }) {
     if (!params.q) {
       throw new Error('No query parameter provided, supported: q')
     }
@@ -65,7 +70,7 @@ class Projects {
       return null
     }
     
-    return projects.map(project => new Project(project))
+    return projects.map((project: Project) => new Project(project))
   }
   
   /**
@@ -84,7 +89,7 @@ class Projects {
    * @param {Object} params 
    * @param {string} [params.id|params.domain] 
    */
-  async remix(params) {
+  async remix(params: Partial<{ id: string | number, domain: string }>) {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))
     
     return await this._api.enqueue(`projects/${param}/remix`, params, {
@@ -93,5 +98,3 @@ class Projects {
     })
   }
 }
-
-module.exports = Projects

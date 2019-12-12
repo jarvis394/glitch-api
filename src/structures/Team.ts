@@ -1,13 +1,13 @@
+import Member from './Member'
+import Feature from './Feature'
+
 /**
  * Team class
  *
  * @class
  */
-class Team {
+export default class Team {
   constructor(options) {
-    const Member = require('./Member')
-    const Feature = require('./Feature')
-
     /**
      * Team ID
      */
@@ -89,5 +89,3 @@ class Team {
     this.features = options.features ? options.features.map(feature => new Feature(feature)) : []
   }
 }
-
-module.exports = Team

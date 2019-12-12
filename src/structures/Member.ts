@@ -3,7 +3,7 @@
  *
  * @class
  */
-class Member {
+export default class Member {
   constructor(options) {
     /**
      * User ID
@@ -16,5 +16,3 @@ class Member {
     this.accessLevel = options.accessLevel
   }
 }
-
-module.exports = Member

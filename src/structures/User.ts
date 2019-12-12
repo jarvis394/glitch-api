@@ -1,12 +1,12 @@
+import Feature from './Feature'
+
 /**
  * User class
  *
  * @class 
  */
-class User {
+export default class User {
   constructor(options) {
-    const Feature = require('./Feature')
-
     /**
      * User ID
      */
@@ -98,5 +98,3 @@ class User {
     this.features = options.features ? options.features.map(feature => new Feature(feature)) : []
   }
 }
-
-module.exports = User

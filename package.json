@@ -1,16 +1,18 @@
 {
   "name": "glitch-api",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Library for using Glitch API ⚙️",
   "main": "src/index",
   "scripts": {
     "start": "gitbook serve",
-    "test": "jest tests/ --verbose",
+    "test": "jest",
     "docs:prepare": "gitbook install",
     "docs:api": "jsdoc2md --partial tools/docs/header --global-index-format none --files src/*/*  > docs/api.md",
     "docs:build": "npm run docs:prepare && npm run docs:api && gitbook build",
     "docs:serve": "npm run docs:prepare && npm run docs:api && gitbook serve",
-    "docs:clean": "rimraf _book"
+    "docs:clean": "rimraf _book",
+    "prepublish": "npm run test && npm run build",
+    "build": "rollup -c"
   },
   "dependencies": {
     "node-fetch": "^2.6.0"
@@ -33,6 +35,7 @@
     "api"
   ],
   "devDependencies": {
+    "@types/node-fetch": "^2.5.4",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "gitbook-cli": "^2.3.2",
@@ -40,6 +43,9 @@
     "jsdoc": "^3.6.3",
     "jsdoc-md": "^3.0.0",
     "jsdoc-to-markdown": "^5.0.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "rollup": "^1.27.11",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.3"
   }
 }

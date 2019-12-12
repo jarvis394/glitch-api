@@ -1,4 +1,4 @@
-const User = require('../structures/User')
+import User from '../structures/User'
 
 const getParams = [
   'id',
@@ -10,7 +10,7 @@ const getParams = [
  *
  * @class
  */
-class Users {
+export default class Users {
   /**
    * Users constructor
    *
@@ -60,5 +60,3 @@ class Users {
     return users.map(user => new User(user))
   }
 }
-
-module.exports = Users

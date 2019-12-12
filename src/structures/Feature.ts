@@ -3,7 +3,7 @@
  * 
  * @class
  */
-class Feature {
+export default class Feature {
   /**
    * Feature constructor
    */
@@ -29,5 +29,3 @@ class Feature {
     this.expiresAt = new Date(options.expiresAt)
   }
 }
-
-module.exports = Feature
