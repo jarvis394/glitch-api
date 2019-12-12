@@ -1,4 +1,5 @@
 import User from '../structures/User'
+import API from './API'
 
 const getParams = [
   'id',
@@ -11,12 +12,14 @@ const getParams = [
  * @class
  */
 export default class Users {
+  _api: API
+
   /**
    * Users constructor
    *
    * @param {API} api API class
    */
-  constructor(api) {
+  constructor(api: API) {
     this._api = api
   }
   
@@ -27,10 +30,10 @@ export default class Users {
    * @param {number} [params.id]
    * @param {string} [params.loign]
    */
-  async get(params) {
+  async get(params: Partial<{ id: string | number, login: string }>): Promise<User> {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))
     
-    const user = await this._api.enqueue(`users/by/${param}`, params, {
+    const user: User = await this._api.enqueue(`users/by/${param}`, params, {
       method: 'GET'
     })
 
@@ -38,6 +41,7 @@ export default class Users {
       return null
     }
     
+    // @ts-ignore
     return new User(user[params[param]])
   }
   
@@ -47,8 +51,8 @@ export default class Users {
    * @param {Object} params 
    * @param {string} params.q Query
    */
-  async search(params) {
-    const users = await this._api.enqueue('users/search', params, {
+  async search(params: { q: string }): Promise<User[]> {
+    const users: User[] = await this._api.enqueue('users/search', params, {
       method: 'GET',
       oldApi: true
     })

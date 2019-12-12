@@ -19,7 +19,7 @@ export default class Teams {
    *
    * @param {API} api API instance
    */
-  constructor(api) {
+  constructor(api: API) {
     this._api = api
   }
   
@@ -30,14 +30,14 @@ export default class Teams {
    * @param {string} [params.url]
    * @param {string} [params.id]
    */
-  async get(params) {
+  async get(params: Partial<{ url: string, id: string }>): Promise<Team> {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))
 
     if (!param) {
       throw new Error('No parameter provided, supported: ' + getParams)
     }
     
-    const team = await this._api.enqueue(`teams/by/${param}`, params, {
+    const team: Team | {} = await this._api.enqueue(`teams/by/${param}`, params, {
       method: 'GET'
     })
 
@@ -45,6 +45,7 @@ export default class Teams {
       return null
     }
     
+    // @ts-ignore
     return new Team(team[params[param]])
   }
   
