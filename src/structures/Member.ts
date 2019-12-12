@@ -4,7 +4,10 @@
  * @class
  */
 export default class Member {
-  constructor(options) {
+  id: any
+  userId: any
+  accessLevel: any
+  constructor(options: Member) {
     /**
      * User ID
      */

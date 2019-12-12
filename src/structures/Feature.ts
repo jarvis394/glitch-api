@@ -4,10 +4,14 @@
  * @class
  */
 export default class Feature {
+  id: any
+  name: any
+  data: any
+  expiresAt: Date
   /**
    * Feature constructor
    */
-  constructor(options) {
+  constructor(options: Feature) {
     /**
      * Feature ID
      */

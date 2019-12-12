@@ -7,7 +7,23 @@ import Feature from './Feature'
  * @class
  */
 export default class Team {
-  constructor(options) {
+  id: any
+  description: any
+  url: any
+  name: any
+  hasAvatarImage: any
+  coverColor: any
+  backgroundColor: any
+  hasCoverImage: any
+  location: any
+  isVerified: any
+  whitelistedDomain: any
+  featuredProjectId: any
+  createdAt: Date
+  updatedAt: Date
+  teamPermissions: any
+  features: any
+  constructor(options: Team) {
     /**
      * Team ID
      */
@@ -81,11 +97,11 @@ export default class Team {
     /**
      * Team members permissions
      */
-    this.teamPermissions = options.teamPermissions ? options.teamPermissions.map(member => new Member(member)) : []
+    this.teamPermissions = options.teamPermissions ? options.teamPermissions.map((member: Member) => new Member(member)) : []
     
     /**
      * Team features list
      */
-    this.features = options.features ? options.features.map(feature => new Feature(feature)) : []
+    this.features = options.features ? options.features.map((feature: Feature) => new Feature(feature)) : []
   }
 }

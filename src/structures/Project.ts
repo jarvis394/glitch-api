@@ -1,5 +1,6 @@
 import ProjectMember from './Member'
 import Feature from './Feature'
+import Member from './Member'
 
 /**
  * Project class
@@ -7,7 +8,25 @@ import Feature from './Feature'
  * @class
  */
 export default class Project {
-  constructor(options) {
+  id: any
+  description: any
+  domain: any
+  baseId: any
+  private: any
+  likesCount: any
+  isSuspended: boolean
+  suspendedReason: any
+  avatarUpdatedAt: Date
+  showAsGlitchTeam: any
+  isEmbedOnly: any
+  remixChain: any
+  notSafeForKids: any
+  createdAt: Date
+  updatedAt: Date
+  permissions: any
+  features: any
+  teamIds: any
+  constructor(options: Project) {
     /**
      * Project ID
      */
@@ -87,14 +106,14 @@ export default class Project {
      * Project permissions
      */
     this.permissions = options.permissions
-      ? options.permissions.map(member => new ProjectMember(member))
+      ? options.permissions.map((member: Member) => new ProjectMember(member))
       : []
 
     /**
      * Project features
      */
     this.features = options.features
-      ? options.features.map(feature => new Feature(feature))
+      ? options.features.map((feature: Feature) => new Feature(feature))
       : []
 
     /**

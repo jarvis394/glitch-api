@@ -27,8 +27,8 @@ export default class Teams {
    * Gets project by url
    *
    * @param {Object} params 
-   * @param {string} [params.url]
-   * @param {string} [params.id]
+   * @param {string} params.url
+   * @param {string} params.id
    */
   async get(params: Partial<{ url: string, id: string }>): Promise<Team> {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))
@@ -55,7 +55,7 @@ export default class Teams {
    * @param {Object} params 
    * @param {string} params.q Query
    */
-  async search(params: { q: string }) {
+  async search(params: { q: string }): Promise<Team[]> {
     const teams = await this._api.enqueue('teams/search', params, {
       method: 'GET',
       oldApi: true
@@ -65,6 +65,6 @@ export default class Teams {
       return null
     }
     
-    return teams.map(team => new Team(team))
+    return teams.map((team: Team) => new Team(team))
   }
 }

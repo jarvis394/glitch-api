@@ -6,7 +6,26 @@ import Feature from './Feature'
  * @class 
  */
 export default class User {
-  constructor(options) {
+  id: any
+  login: any
+  name: any
+  descrtiption: any
+  description: any
+  location: any
+  thanksCount: any
+  utcOffset: any
+  color: any
+  hasCoverImage: any
+  coverColor: any
+  avatarUrl: any
+  avatarThumbnailUrl: any
+  createdAt: Date
+  updatedAt: Date
+  featuredProjectId: any
+  isSupport: any
+  isInfrastructureUser: any
+  features: any
+  constructor(options: User) {
     /**
      * User ID
      */
@@ -95,6 +114,6 @@ export default class User {
     /**
      * User features
      */
-    this.features = options.features ? options.features.map(feature => new Feature(feature)) : []
+    this.features = options.features ? options.features.map((feature: Feature) => new Feature(feature)) : []
   }
 }
