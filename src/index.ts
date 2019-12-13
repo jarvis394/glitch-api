@@ -1,7 +1,2 @@
-import Glitch from './models/Glitch'
-import * as constants from './utils/constants'
-
-module.exports = {
-  Glitch,
-  ...constants
-}
+export { default as Glitch } from './models/Glitch'
+export * from './utils/constants'

@@ -23,9 +23,17 @@ export interface IRequestOptions {
  * @class
  */
 export default class API {
-  _glitch: Glitch
+  private _glitch: Glitch
+
+  /**
+   * Requests queue
+   */
   queue: Request[]
-  started: boolean
+
+  /**
+   * Shows whether the instance is working
+   */
+  working: boolean
   users: Users
   projects: Projects
   teams: Teams
@@ -38,7 +46,7 @@ export default class API {
   constructor(glitch: Glitch) {
     this._glitch = glitch
     this.queue = []
-    this.started = false
+    this.working = false
 
     /**
      * Users methods
@@ -73,16 +81,16 @@ export default class API {
   /**
    * Runs queue
    */
-  worker() {
-    if (this.started) {
+  private worker() {
+    if (this.working) {
       return
     }
 
-    this.started = true
+    this.working = true
 
     const work = () => {
       if (this.queue.length === 0) {
-        this.started = false
+        this.working = false
 
         return
       }
@@ -109,7 +117,7 @@ export default class API {
   enqueue(
     method: string,
     params: Record<string, any>,
-    requestParams: Partial<{ method: string; oldApi: boolean }>
+    requestParams: Partial<IRequestParams>
   ): Promise<any> {
     const request = new Request(method, params, requestParams)
 

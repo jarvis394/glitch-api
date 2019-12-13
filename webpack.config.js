@@ -1,13 +1,15 @@
 const path = require('path')
+const TypedocWebpackPlugin = require('typedoc-webpack-plugin')
 
 module.exports = {
   mode: 'production',
   entry: './src/index.ts',
+  target: 'node',
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: 'awesome-typescript-loader',
         exclude: /node_modules/
       }
     ]
@@ -16,7 +18,13 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js']
   },
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
-  }
+    filename: 'index.js',
+    path: path.resolve(__dirname, 'lib')
+  },
+  plugins: [
+    new TypedocWebpackPlugin({
+      name: 'glitch-api',
+      mode: 'file'
+    }, './src')
+  ]
 }

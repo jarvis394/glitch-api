@@ -13,5 +13,9 @@
     "incremental": false
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.(t|j)s"]
+  "exclude": ["node_modules", "dist", "**/*.test.(t|j)s"],
+  "typedocOptions": {
+    "mode": "modules",
+    "out": "docs"
+  }
 }

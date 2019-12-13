@@ -1,5 +1,5 @@
 import API from './API'
-import { API_BASE_URL, API_BASE_URL_OLD } from '../utils/constants'
+import { API_BASE_URL, API_BASE_URL_OLD, API_TIME_INTERVAL } from '../utils/constants'
 
 export interface IGlitchOptions {
   /**
@@ -11,6 +11,11 @@ export interface IGlitchOptions {
    * Timeout for requests
    */
   apiTimeout: number
+
+  /**
+   * Interval between requests
+   */
+  apiInterval: number
 
   /**
    * Headers for requests
@@ -44,22 +49,13 @@ export default class Glitch {
    */
   options: IGlitchOptions
 
-  /**
-   * Glitch constructor
-   *
-   * @param {Object} options
-   * @param {string} options.token User Glitch API authorization token
-   * @param {number} options.apiTimeout Timeout for requests
-   * @param {Object} options.apiHeaders Headers for requests
-   * @param {string} options.apiBaseUrl Specific base URL for an Glitch API
-   * @param {string} options.apiBaseUrlOld Specific base URL for an old Glitch API
-   */
   constructor({
     token,
     apiTimeout,
     apiHeaders,
     apiBaseUrl,
-    apiBaseUrlOld
+    apiBaseUrlOld,
+    apiInterval
   }: Partial<IGlitchOptions> = {}) {
     /**
      * Glitch API class
@@ -69,6 +65,7 @@ export default class Glitch {
     this.options = {
       token: token ? token.toString() : null,
       apiTimeout: apiTimeout || 10e3,
+      apiInterval: apiInterval || API_TIME_INTERVAL,
       apiHeaders: apiHeaders || {},
       apiBaseUrl: apiBaseUrl || API_BASE_URL,
       apiBaseUrlOld: apiBaseUrlOld || API_BASE_URL_OLD

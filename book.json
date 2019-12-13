@@ -1,8 +1,0 @@
-{
-  "gitbook":   "latest",
-  "root":      "./docs",
-  "structure": { 
-    "readme":  "intro.md",
-    "summary": "README.md" 
-  }
-}

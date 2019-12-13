@@ -1,4 +1,5 @@
-const { Glitch } = require('../src')
+import { Glitch } from '../src'
+
 const glitch = new Glitch()
 const { api } = glitch
 const ID = '016af9e7-d077-4854-83f3-b0863c88ba35'
