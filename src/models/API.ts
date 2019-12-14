@@ -17,6 +17,11 @@ export interface IRequestOptions {
   headers: Record<string, any>
 }
 
+export interface IRequestParams {
+  method: string
+  oldApi: boolean
+}
+
 /**
  * API class
  *
@@ -144,8 +149,8 @@ export default class API {
       body: null,
       headers: {
         ...options.apiHeaders,
-        connection: 'keep-alive'
-      }
+        connection: 'keep-alive',
+      },
     }
 
     if (options.token) {

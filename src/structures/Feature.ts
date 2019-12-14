@@ -1,6 +1,6 @@
 /**
  * Feature class
- * 
+ *
  * @class
  */
 export default class Feature {
@@ -16,17 +16,17 @@ export default class Feature {
      * Feature ID
      */
     this.id = options.id
-    
+
     /**
      * Feature name
      */
     this.name = options.name
-    
+
     /**
      * Feature data
      */
     this.data = options.data
-    
+
     /**
      * Date when feature expires
      */

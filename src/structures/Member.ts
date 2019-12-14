@@ -12,7 +12,7 @@ export default class Member {
      * User ID
      */
     this.id = options.userId
-    
+
     /**
      * User access level
      */

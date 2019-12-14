@@ -8,18 +8,34 @@ import Member from './Member'
  * @class
  */
 export default class Project {
-  id: any
-  description: any
-  domain: any
-  baseId: any
-  private: any
-  likesCount: any
+  /**
+   * Project ID
+   * Example: 016af9e7-d077-4854-83f3-b0863c88ba35
+   */
+  id: string
+  /**
+   * Project description
+   */
+  description?: string
+  /**
+   * Project domain
+   */
+  domain: string
+  /**
+   * Project base ID
+   */
+  baseId?: string
+  /**
+   * Shows whether the project is private or not
+   */
+  private: boolean
+  likesCount: number
   isSuspended: boolean
-  suspendedReason: any
+  suspendedReason?: string
   avatarUpdatedAt: Date
-  showAsGlitchTeam: any
-  isEmbedOnly: any
-  remixChain: any
+  showAsGlitchTeam: boolean
+  isEmbedOnly: boolean
+  remixChain: string
   notSafeForKids: any
   createdAt: Date
   updatedAt: Date
@@ -27,29 +43,14 @@ export default class Project {
   features: any
   teamIds: any
   constructor(options: Project) {
-    /**
-     * Project ID
-     */
     this.id = options.id
 
-    /**
-     * Project description
-     */
     this.description = options.description
 
-    /**
-     * Project domain
-     */
     this.domain = options.domain
 
-    /**
-     * Project base ID
-     */
     this.baseId = options.baseId
 
-    /**
-     * Is project private
-     */
     this.private = options.private
 
     /**

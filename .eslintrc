@@ -19,3 +19,4 @@ rules:
   quotes: ['warn', 'single']
   semi: ['error', 'never']
   no-unused-vars: 'off'
+ignorePatterns: ['node_modules/', 'lib/', 'docs/', '*.test*']

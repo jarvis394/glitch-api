@@ -14,10 +14,15 @@ module.exports = {
       }
     ]
   },
+  optimization: {
+    minimize: false
+  },
   resolve: {
     extensions: ['.tsx', '.ts', '.js']
   },
   output: {
+    libraryTarget: 'umd',
+    library: 'glitch-api',
     filename: 'index.js',
     path: path.resolve(__dirname, 'lib')
   },

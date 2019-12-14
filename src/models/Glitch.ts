@@ -1,5 +1,9 @@
 import API from './API'
-import { API_BASE_URL, API_BASE_URL_OLD, API_TIME_INTERVAL } from '../utils/constants'
+import {
+  API_BASE_URL,
+  API_BASE_URL_OLD,
+  API_TIME_INTERVAL,
+} from '../utils/constants'
 
 export interface IGlitchOptions {
   /**
@@ -55,7 +59,7 @@ export default class Glitch {
     apiHeaders,
     apiBaseUrl,
     apiBaseUrlOld,
-    apiInterval
+    apiInterval,
   }: Partial<IGlitchOptions> = {}) {
     /**
      * Glitch API class
@@ -68,7 +72,7 @@ export default class Glitch {
       apiInterval: apiInterval || API_TIME_INTERVAL,
       apiHeaders: apiHeaders || {},
       apiBaseUrl: apiBaseUrl || API_BASE_URL,
-      apiBaseUrlOld: apiBaseUrlOld || API_BASE_URL_OLD
+      apiBaseUrlOld: apiBaseUrlOld || API_BASE_URL_OLD,
     }
   }
 

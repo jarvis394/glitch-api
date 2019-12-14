@@ -1,11 +1,11 @@
 {
   "name": "glitch-api",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Library for using Glitch API ⚙️",
-  "main": "lib/index",
+  "main": "./lib/index.js",
   "scripts": {
-    "start": "gitbook serve",
-    "test": "jest",
+    "start": "serve lib/docs",
+    "test": "jest test",
     "build": "webpack -c",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint . --fix",
@@ -42,9 +42,12 @@
     "jest": "^24.9.0",
     "path": "^0.12.7",
     "prettier": "^1.18.2",
+    "serve": "^11.2.0",
     "ts-jest": "^24.1.0",
     "typedoc": "^0.15.4",
     "typedoc-webpack-plugin": "^1.1.4",
-    "typescript": "^3.7.3"
+    "typescript": "^3.7.3",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
   }
 }
