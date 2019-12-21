@@ -2,6 +2,7 @@ import API from './API'
 
 import Project from '../structures/Project'
 import Remix from '../structures/Remix'
+import Editor from '../models/Editor'
 
 /** @hidden */
 const getParams = ['id', 'domain']
@@ -34,7 +35,7 @@ export default class Projects {
    * @param {string} params.domain - Project domain
    */
   async get(
-    params: Partial<{ id: number | string; domain: string }>
+    params: Partial<{ id: string; domain: string }>
   ): Promise<Project | null> {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))
 
@@ -102,8 +103,12 @@ export default class Projects {
    * @param params.id - Project ID
    * @param params.domain - Project domain
    */
-  async remix(params: Partial<{ id: string | number; domain: string }>) {
+  async remix(params: Partial<{ id: string; domain: string }>) {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))
+
+    if (!param) {
+      throw new Error('No parameter provided, supported: ' + getParams)
+    }
 
     return new Remix(
       await this._api.enqueue(`projects/${param}/remix`, params, {
@@ -111,5 +116,17 @@ export default class Projects {
         oldApi: true,
       })
     )
+  }
+
+  /**
+   * Edits project
+   * @param params
+   * @param params.id - Project ID
+   * @param params.domain - Project domain
+   */
+  async edit(params: Partial<{ id: string; domain: string }>): Promise<Editor> {
+    // @ts-ignore
+    const editor = new Editor(await this.get(params), this._api._glitch)
+    return editor
   }
 }

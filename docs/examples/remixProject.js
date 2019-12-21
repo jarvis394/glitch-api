@@ -1,4 +1,4 @@
-const { Glitch } = require('glitch-api')
+const { Glitch } = require('../../src')
 const glitch = new Glitch({ token: process.env.TOKEN })
 const { api } = glitch
 

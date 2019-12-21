@@ -16,9 +16,8 @@ export default class API {
   /**
    * Glitch instance
    * @hidden
-   * @private
    */
-  private _glitch: Glitch
+  _glitch: Glitch
 
   /**
    * Requests queue

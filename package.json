@@ -1,6 +1,6 @@
 {
   "name": "glitch-api",
-  "version": "2.4.0",
+  "version": "3.0.0-alpha2",
   "description": "Library for using Glitch API ⚙️",
   "main": "./lib/index.js",
   "scripts": {
@@ -36,7 +36,10 @@
     "@types/jest": "^24.0.24",
     "@types/node": "^12.12.21",
     "@types/node-fetch": "^2.5.4",
+    "@types/socket.io-client": "^1.4.32",
+    "@types/ws": "^6.0.4",
     "awesome-typescript-loader": "^5.2.1",
+    "bufferutil": "^4.0.1",
     "eslint": "^6.7.2",
     "express": "^4.17.1",
     "fs": "0.0.1-security",

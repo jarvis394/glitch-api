@@ -13,6 +13,7 @@ A Node.js module that allows you to easily interact with the Glitch API
 
 - 99% coverage of the **known** Glitch API
 - Uses **TypeScript** that provides hints in editor, type checking, etc.
+- **Supports WebSocket connection to the Glitch editor**
 - Support for authorization
 - Only one dependence: `node-fetch`
 - Class abstraction
