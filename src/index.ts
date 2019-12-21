@@ -10,5 +10,6 @@ export { default as Member } from './structures/Member'
 export { default as Project } from './structures/Project'
 export { default as Team } from './structures/Team'
 export { default as User } from './structures/User'
+export { default as Remix } from './structures/Remix'
 
 export * from './utils/constants'

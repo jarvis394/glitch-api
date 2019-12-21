@@ -1,12 +1,13 @@
 {
   "name": "glitch-api",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Library for using Glitch API ⚙️",
   "main": "./lib/index.js",
   "scripts": {
     "start": "serve lib/docs",
     "test": "jest test",
     "build": "webpack -c",
+    "build:docs": "typedoc --out ./lib/docs --mode file --name glitch-api --theme ./docs/theme ./src",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint . --fix",
     "lint:prettier": "prettier src/**/{.[^.],}* --config .prettierrc --write"
@@ -22,7 +23,7 @@
     "url": "https://github.com/jarvis394/glitch-api/"
   },
   "files": [
-    "lib/"
+    "lib/index.js"
   ],
   "license": "MIT",
   "keywords": [
@@ -32,22 +33,23 @@
     "api"
   ],
   "devDependencies": {
-    "@types/jest": "^24.0.23",
-    "@types/node": "^12.12.17",
+    "@types/jest": "^24.0.24",
+    "@types/node": "^12.12.21",
     "@types/node-fetch": "^2.5.4",
     "awesome-typescript-loader": "^5.2.1",
-    "eslint": "^6.6.0",
+    "eslint": "^6.7.2",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "jest": "^24.9.0",
     "path": "^0.12.7",
-    "prettier": "^1.18.2",
+    "prettier": "^1.19.1",
+    "sass": "^1.24.0",
     "serve": "^11.2.0",
-    "ts-jest": "^24.1.0",
-    "typedoc": "^0.15.4",
+    "ts-jest": "^24.2.0",
+    "typedoc": "^0.15.5",
     "typedoc-webpack-plugin": "^1.1.4",
     "typescript": "^3.7.3",
-    "webpack": "^4.41.2",
+    "webpack": "^4.41.4",
     "webpack-cli": "^3.3.10"
   }
 }

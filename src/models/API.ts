@@ -1,79 +1,66 @@
 import Request from './Request'
 import fetch from 'node-fetch'
 import { URLSearchParams } from 'url'
+import { IRequestOptions, IRequestParams } from '../interfaces/Requests'
 
 import Users from './Users'
 import Projects from './Projects'
 import Teams from './Teams'
 import Glitch from './Glitch'
 
-const API_TIME_INTERVAL = 0
-
-export interface IRequestOptions {
-  method: string
-  compress: boolean
-  timeout: number
-  body: any | null
-  headers: Record<string, any>
-}
-
-export interface IRequestParams {
-  method: string
-  oldApi: boolean
-}
-
 /**
  * API class
- *
  * @class
  */
 export default class API {
+  /**
+   * Glitch instance
+   * @hidden
+   * @private
+   */
   private _glitch: Glitch
 
   /**
    * Requests queue
    */
-  queue: Request[]
+  protected queue: Request[]
 
   /**
-   * Shows whether the instance is working
+   * Shows whether the instance is working on a request
    */
-  working: boolean
+  protected working: boolean
+
+  /**
+   * Users API
+   */
   users: Users
+
+  /**
+   * Projects API
+   */
   projects: Projects
+
+  /**
+   * Teams API
+   */
   teams: Teams
 
   /**
    * API constructor
-   *
-   * @param {Glitch} glitch Glitch instance
+   * @param glitch - Glitch instance
    */
   constructor(glitch: Glitch) {
     this._glitch = glitch
     this.queue = []
     this.working = false
-
-    /**
-     * Users methods
-     */
     this.users = new Users(this)
-
-    /**
-     * Projects methods
-     */
     this.projects = new Projects(this)
-
-    /**
-     * Teams methods
-     */
     this.teams = new Teams(this)
   }
 
   /**
    * Adds request for queue
-   *
-   * @param {Request} request Request to call
-   * @return {Promise}
+   * @param request - Request to call
    */
   callWithRequest(request: Request): Promise<any> {
     this.queue.push(request)
@@ -85,6 +72,7 @@ export default class API {
 
   /**
    * Runs queue
+   * @private
    */
   private worker() {
     if (this.working) {
@@ -102,7 +90,7 @@ export default class API {
 
       this.callMethod(this.queue.shift())
 
-      setTimeout(work, API_TIME_INTERVAL)
+      setTimeout(work, this._glitch.options.apiInterval)
     }
 
     work()
@@ -110,14 +98,11 @@ export default class API {
 
   /**
    * Adds method to queue
-   *
-   * @param {string} method Method to execute
-   * @param {Object} params Parameters for method
-   * @param {Object} requestParams Params for request
-   * @param {string} requestParams.method Method for request
-   * @param {boolean} requestParams.oldApi Use old API url state
-   *
-   * @return {Promise<any>}
+   * @param method - Method to execute
+   * @param params - Parameters for method
+   * @param requestParams - Parameters for request
+   * @param requestParams.method - Method for request
+   * @param requestParams.oldApi - Use old API url state
    */
   enqueue(
     method: string,
@@ -131,9 +116,9 @@ export default class API {
 
   /**
    * Calls the API method
-   *
-   * @param {Request} request Request to call
+   * @param request - Request to call
    */
+  // TODO: Return a Context with { error, response, request, code }
   async callMethod(request: Request) {
     const { options } = this._glitch
     const { method, params, requestParams } = request
@@ -144,7 +129,7 @@ export default class API {
     }/${method}?`
     let requestOptions: IRequestOptions = {
       method: requestParams.method || 'GET',
-      compress: false,
+      compress: options.compress,
       timeout: options.apiTimeout,
       body: null,
       headers: {

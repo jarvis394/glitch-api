@@ -1,16 +1,17 @@
 import ProjectMember from './Member'
 import Feature from './Feature'
 import Member from './Member'
+import IMemberOptions from '../interfaces/MemberOptions'
 
 /**
  * Project class
  *
+ * Represents a Glitch project
  * @class
  */
 export default class Project {
   /**
    * Project ID
-   * Example: 016af9e7-d077-4854-83f3-b0863c88ba35
    */
   id: string
   /**
@@ -18,108 +19,94 @@ export default class Project {
    */
   description?: string
   /**
-   * Project domain
+   * Project domain name
    */
   domain: string
   /**
    * Project base ID
+   * Shows the ID of project it was remixed from
    */
   baseId?: string
   /**
    * Shows whether the project is private or not
    */
   private: boolean
+  /**
+   * Project likes count
+   */
   likesCount: number
+  /**
+   * Shows whether the project is suspended or not
+   */
   isSuspended: boolean
+  /**
+   * If the project is suspended, then it represents the reason of the suspension
+   */
   suspendedReason?: string
+  /**
+   * Date when the project avatar was last updated
+   */
   avatarUpdatedAt: Date
+  /**
+   * Shows whether the project should be shown as glitch team's
+   */
   showAsGlitchTeam: boolean
+  /**
+   * Shows whether the project could be only in the embedded form
+   */
   isEmbedOnly: boolean
-  remixChain: string
-  notSafeForKids: any
+  /**
+   * Project's remix chain
+   */
+  remixChain: string[]
+  /**
+   * Shows whether the project is not safe for kids
+   */
+  notSafeForKids: boolean
+  /**
+   * Date when the project was created
+   */
   createdAt: Date
+  /**
+   * Date when the project was updated
+   */
   updatedAt: Date
-  permissions: any
-  features: any
-  teamIds: any
+  /**
+   * List of project members (see [[Member]])
+   */
+  permissions?: Member[]
+  /**
+   * Project features (see [[Feature]])
+   */
+  features?: Feature[]
+  /**
+   * IDs of teams the project is in
+   */
+  teamIds?: number[]
   constructor(options: Project) {
     this.id = options.id
-
     this.description = options.description
-
     this.domain = options.domain
-
     this.baseId = options.baseId
-
     this.private = options.private
-
-    /**
-     * Project likes count
-     */
     this.likesCount = options.likesCount
-
-    /**
-     * Is project suspended
-     */
     this.isSuspended = !!options.suspendedReason
-
-    /**
-     * Suspended reason
-     */
     this.suspendedReason = options.suspendedReason
-
-    /**
-     * Date when project avatar was last updated
-     */
     this.avatarUpdatedAt = new Date(options.avatarUpdatedAt)
-
-    /**
-     * Show as glitch team state
-     */
     this.showAsGlitchTeam = options.showAsGlitchTeam
-
-    /**
-     * Is project only an embed
-     */
     this.isEmbedOnly = options.isEmbedOnly
-
-    /**
-     * Project remix chain
-     */
     this.remixChain = options.remixChain
-
-    /**
-     * Is project not safe for kids
-     */
     this.notSafeForKids = options.notSafeForKids
-
-    /**
-     * Date when project was created
-     */
     this.createdAt = new Date(options.createdAt)
-
-    /**
-     * Date when project was last updated
-     */
     this.updatedAt = new Date(options.updatedAt)
-
-    /**
-     * Project permissions
-     */
     this.permissions = options.permissions
-      ? options.permissions.map((member: Member) => new ProjectMember(member))
+      ? options.permissions.map(
+          (member: IMemberOptions) => new ProjectMember(member)
+        )
       : []
-
-    /**
-     * Project features
-     */
     this.features = options.features
       ? options.features.map((feature: Feature) => new Feature(feature))
       : []
-
-    /**
-     * Project teams IDs
-     */
     this.teamIds = options.teamIds
   }
 }

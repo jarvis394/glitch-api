@@ -14,7 +14,7 @@ describe('Get users', () => {
   it('should get user by login', async () => {
     const res = await api.users.get({ login: LOGIN })
 
-    expect(res.id).toBe(ID)
+    expect(res.login).toBe(LOGIN)
   })
 })
 
@@ -22,6 +22,6 @@ describe('Search users', () => {
   it('should search users by query', async () => {
     const res = await api.users.search({ q: 'jarvis' })
     
-    expect(res.length).not.toBe(0)
+    expect(res).not.toBeNull()
   })
 })

@@ -1,6 +1,7 @@
 import User from '../structures/User'
 import API from './API'
 
+/** @hidden */
 const getParams = ['id', 'login']
 
 /**
@@ -9,7 +10,10 @@ const getParams = ['id', 'login']
  * @class
  */
 export default class Users {
-  _api: API
+  /**
+   * @hidden
+   */
+  private _api: API
 
   /**
    * Users constructor
@@ -24,8 +28,8 @@ export default class Users {
    * Gets user by id or login
    *
    * @param {Object} params
-   * @param {number} params.id
-   * @param {string} params.login
+   * @param {number} params.id - User ID
+   * @param {string} params.login - User login
    */
   async get(
     params: Partial<{ id: string | number; login: string }>
@@ -50,7 +54,7 @@ export default class Users {
    * @param {Object} params
    * @param {string} params.q Query
    */
-  async search(params: { q: string }): Promise<User[]> {
+  async search(params: { q: string }): Promise<User[] | null> {
     const users: User[] = await this._api.enqueue('users/search', params, {
       method: 'GET',
       oldApi: true,
@@ -58,8 +62,8 @@ export default class Users {
 
     if (users.length === 0) {
       return null
+    } else {
+      return users.map(user => new User(user))
     }
-
-    return users.map(user => new User(user))
   }
 }

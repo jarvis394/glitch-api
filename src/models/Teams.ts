@@ -1,6 +1,7 @@
 import API from './API'
 import Team from '../structures/Team'
 
+/** @hidden */
 const getParams = ['url', 'id']
 
 /**
@@ -9,7 +10,10 @@ const getParams = ['url', 'id']
  * @class
  */
 export default class Teams {
-  _api: API
+  /**
+   * @hidden
+   */
+  private _api: API
 
   /**
    * Teams constructor
@@ -24,8 +28,8 @@ export default class Teams {
    * Gets project by url
    *
    * @param {Object} params
-   * @param {string} params.url
-   * @param {string} params.id
+   * @param {string} params.url - Project URL
+   * @param {string} params.id - Project ID
    */
   async get(params: Partial<{ url: string; id: string }>): Promise<Team> {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))

@@ -1,21 +1,23 @@
+import IMemberOptions from '../interfaces/MemberOptions'
+
 /**
  * Member class
  *
+ * Represents a Glitch project's member.
+ * It vares from [[User]] class, so if you want to see all fields the user has, check [[User]]
  * @class
  */
 export default class Member {
-  id: any
-  userId: any
-  accessLevel: any
-  constructor(options: Member) {
-    /**
-     * User ID
-     */
+  /**
+   * User ID
+   */
+  id: number
+  /**
+   * User access level in the project
+   */
+  accessLevel: number
+  constructor(options: IMemberOptions) {
     this.id = options.userId
-
-    /**
-     * User access level
-     */
     this.accessLevel = options.accessLevel
   }
 }

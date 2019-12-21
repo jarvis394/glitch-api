@@ -35,6 +35,12 @@ export interface IGlitchOptions {
    * Specific base URL for an old Glitch API
    */
   apiBaseUrlOld: string
+
+  /**
+   * State that shows whether to compress requests before sending.
+   * @default true
+   */
+  compress: boolean
 }
 
 /**
@@ -49,7 +55,7 @@ export default class Glitch {
   api: API
 
   /**
-   * Constructor options
+   * Instance options
    */
   options: IGlitchOptions
 
@@ -60,12 +66,9 @@ export default class Glitch {
     apiBaseUrl,
     apiBaseUrlOld,
     apiInterval,
+    compress,
   }: Partial<IGlitchOptions> = {}) {
-    /**
-     * Glitch API class
-     */
     this.api = new API(this)
-
     this.options = {
       token: token ? token.toString() : null,
       apiTimeout: apiTimeout || 10e3,
@@ -73,13 +76,12 @@ export default class Glitch {
       apiHeaders: apiHeaders || {},
       apiBaseUrl: apiBaseUrl || API_BASE_URL,
       apiBaseUrlOld: apiBaseUrlOld || API_BASE_URL_OLD,
+      compress: compress || true,
     }
   }
 
   /**
    * Returns user token
-   *
-   * @return {string}
    */
   get token(): string {
     return this.options.token
@@ -88,7 +90,16 @@ export default class Glitch {
   /**
    * Returns package version
    */
-  get PACKAGE_VERSION(): string {
+  get VERSION(): string {
     return require('../../package.json').version
+  }
+
+  /**
+   * Sets token to the instance options
+   * @param token - Token to set
+   */
+  setToken(token: string): string {
+    this.options.token = token
+    return this.options.token
   }
 }

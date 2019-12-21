@@ -1,7 +1,9 @@
 import API from './API'
 
 import Project from '../structures/Project'
+import Remix from '../structures/Remix'
 
+/** @hidden */
 const getParams = ['id', 'domain']
 
 /**
@@ -10,7 +12,10 @@ const getParams = ['id', 'domain']
  * @class
  */
 export default class Projects {
-  _api: API
+  /**
+   * @hidden
+   */
+  private _api: API
 
   /**
    * Projects constructor
@@ -25,8 +30,8 @@ export default class Projects {
    * Gets project by id or domain
    *
    * @param {Object} params
-   * @param {string} [params.id]
-   * @param {string} [params.domain]
+   * @param {string} params.id - Project ID
+   * @param {string} params.domain - Project domain
    */
   async get(
     params: Partial<{ id: number | string; domain: string }>
@@ -93,15 +98,18 @@ export default class Projects {
   /**
    * Remixes project
    *
-   * @param {Object} params
-   * @param {string} [params.id|params.domain]
+   * @param params
+   * @param params.id - Project ID
+   * @param params.domain - Project domain
    */
   async remix(params: Partial<{ id: string | number; domain: string }>) {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))
 
-    return await this._api.enqueue(`projects/${param}/remix`, params, {
-      method: 'POST',
-      oldApi: true,
-    })
+    return new Remix(
+      await this._api.enqueue(`projects/${param}/remix`, params, {
+        method: 'POST',
+        oldApi: true,
+      })
+    )
   }
 }

@@ -2,13 +2,13 @@ const { Glitch } = require('../src')
 const glitch = new Glitch()
 const { api } = glitch
 const ID = 4683
-const URL = 'tihon'
+const _URL= 'tihon'
 
 describe('Get teams', () => {
   it('should get team by url', async () => {
-    const res = await api.teams.get({ url: URL })
+    const res = await api.teams.get({ url: _URL })
 
-    expect(res.id).toBe(ID)
+    expect(res.url).toBe(_URL)
   })
 
   it('should get team by id', async () => {
@@ -20,8 +20,8 @@ describe('Get teams', () => {
 
 describe('Search teams', () => {
   it('should search teams by query', async () => {
-    const res = await api.teams.search({ q: URL })
-    
-    expect(res.length).not.toBe(0)
+    const res = await api.teams.search({ q: _URL })
+
+    expect(res).not.toBeNull()
   })
 })

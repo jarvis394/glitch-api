@@ -21,8 +21,8 @@ describe('Get projects', () => {
 
 describe('Search project', () => {
   it('should search project by query', async () => {
-    const res = await api.projects.search({ q: 'community' })
+    const res = await api.projects.search({ q: DOMAIN })
 
-    expect(res.length).not.toBe(0)
+    expect(res).not.toBeNull()
   })
 })
