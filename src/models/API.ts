@@ -1,12 +1,13 @@
 import Request from './Request'
-import fetch from 'node-fetch'
+import fetch, { Response } from 'node-fetch'
 import { URLSearchParams } from 'url'
 import { IRequestOptions, IRequestParams } from '../interfaces/Requests'
 
 import Users from './Users'
 import Projects from './Projects'
 import Teams from './Teams'
-import Glitch from './Glitch'
+import { IGlitchOptions } from './Glitch'
+import Context from '../structures/Context'
 
 /**
  * API class
@@ -14,10 +15,10 @@ import Glitch from './Glitch'
  */
 export default class API {
   /**
-   * Glitch instance
+   * Glitch instance's options
    * @hidden
    */
-  _glitch: Glitch
+  _options: IGlitchOptions
 
   /**
    * Requests queue
@@ -46,10 +47,10 @@ export default class API {
 
   /**
    * API constructor
-   * @param glitch - Glitch instance
+   * @param glitchOptions - Glitch instance's options
    */
-  constructor(glitch: Glitch) {
-    this._glitch = glitch
+  constructor(glitchOptions: IGlitchOptions) {
+    this._options = glitchOptions
     this.queue = []
     this.working = false
     this.users = new Users(this)
@@ -89,7 +90,7 @@ export default class API {
 
       this.callMethod(this.queue.shift())
 
-      setTimeout(work, this._glitch.options.apiInterval)
+      setTimeout(work, this._options.apiInterval)
     }
 
     work()
@@ -107,7 +108,7 @@ export default class API {
     method: string,
     params: Record<string, any>,
     requestParams: Partial<IRequestParams>
-  ): Promise<any> {
+  ): Promise<Context> {
     const request = new Request(method, params, requestParams)
 
     return this.callWithRequest(request)
@@ -117,55 +118,49 @@ export default class API {
    * Calls the API method
    * @param request - Request to call
    */
-  // TODO: Return a Context with { error, response, request, code }
   async callMethod(request: Request) {
-    const { options } = this._glitch
+    const {
+      apiBaseUrlOld,
+      apiBaseUrl,
+      compress,
+      apiTimeout,
+      apiHeaders,
+      token,
+    } = this._options
     const { method, params, requestParams } = request
     const search = new URLSearchParams(params)
 
-    let url = `${
-      requestParams.oldApi ? options.apiBaseUrlOld : options.apiBaseUrl
+    let url: string = `${
+      requestParams.oldApi ? apiBaseUrlOld : apiBaseUrl
     }/${method}?`
     let requestOptions: IRequestOptions = {
       method: requestParams.method || 'GET',
-      compress: options.compress,
-      timeout: options.apiTimeout,
+      compress: compress,
+      timeout: apiTimeout,
       body: null,
       headers: {
-        ...options.apiHeaders,
+        ...apiHeaders,
         connection: 'keep-alive',
       },
     }
 
-    if (options.token) {
-      search.append('authorization', options.token)
-    }
+    if (token) search.append('authorization', token)
 
-    if (requestParams.method === 'GET') {
-      url += search.toString()
-    } else {
-      requestOptions.body = search
-    }
+    if (requestParams.method === 'GET') url += search.toString()
+    else requestOptions.body = search
 
     try {
-      const resFetch = await fetch(url, requestOptions)
-      let json
+      const resFetch: Response = await fetch(url, requestOptions)
+      const resText = await resFetch.text()
+      const context: Context = new Context(resFetch, resText, requestOptions)
 
-      try {
-        json = await resFetch.json()
-      } catch (e) {
-        return request.reject(
-          new Error(
-            `Can't parse the reponse for method ${method}: ${e.message}`
-          )
+      if (context.error) {
+        throw new Error(
+          `[${context.error.statusCode}] On trying to execute ${method}: ${context.error.message}`
         )
       }
 
-      if (!resFetch.ok) {
-        throw new Error(`[${resFetch.status}] ${json.message}`)
-      }
-
-      return request.resolve(json)
+      return request.resolve(context)
     } catch (e) {
       return request.reject(e)
     }

@@ -21,7 +21,7 @@ export default class Remix {
    * Link to join to the remixed project
    */
   joinLink: string
-  constructor(options: Remix) {
+  constructor(options: Partial<Remix>) {
     this.id = options.id
     this.domain = options.domain
     this.inviteToken = options.inviteToken

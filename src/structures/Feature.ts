@@ -21,7 +21,7 @@ export default class Feature {
    * Date when the project's feature would expire
    */
   expiresAt: Date
-  constructor(options: Feature) {
+  constructor(options: Partial<Feature>) {
     this.id = options.id
     this.name = options.name
     this.data = options.data

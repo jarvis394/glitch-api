@@ -16,7 +16,7 @@ export default class Member {
    * User access level in the project
    */
   accessLevel: number
-  constructor(options: IMemberOptions) {
+  constructor(options: Partial<IMemberOptions>) {
     this.id = options.userId
     this.accessLevel = options.accessLevel
   }

@@ -3,6 +3,7 @@ import API from './API'
 import Project from '../structures/Project'
 import Remix from '../structures/Remix'
 import Editor from '../models/Editor'
+import Context from 'src/structures/Context'
 
 /** @hidden */
 const getParams = ['id', 'domain']
@@ -13,9 +14,7 @@ const getParams = ['id', 'domain']
  * @class
  */
 export default class Projects {
-  /**
-   * @hidden
-   */
+  /** @hidden */
   private _api: API
 
   /**
@@ -43,7 +42,7 @@ export default class Projects {
       throw new Error('No parameter provided, supported: ' + getParams)
     }
 
-    const project: Project = await this._api.enqueue(
+    const context: Context = await this._api.enqueue(
       `projects/by/${param}`,
       params,
       {
@@ -51,12 +50,12 @@ export default class Projects {
       }
     )
 
-    if (Object.keys(project).length === 0) {
+    if (Object.keys(context.response).length === 0) {
       return null
     }
 
     // @ts-ignore
-    return new Project(project[params[param]])
+    return new Project(context.response[params[param]])
   }
 
   /**
@@ -70,30 +69,36 @@ export default class Projects {
       throw new Error('No query parameter provided, supported: q')
     }
 
-    const projects = await this._api.enqueue('projects/search', params, {
-      method: 'GET',
-      oldApi: true,
-    })
+    const context: Context = await this._api.enqueue(
+      'projects/search',
+      params,
+      {
+        method: 'GET',
+        oldApi: true,
+      }
+    )
 
-    if (projects.length === 0) {
+    if (context.response.length === 0) {
       return null
     }
 
-    return projects.map((project: Project) => new Project(project))
+    return context.response.map((project: Project) => new Project(project))
   }
 
   /**
    * Gets project's questions
    */
   async questions() {
-    return await this._api.enqueue(
-      'projects/questions',
-      {},
-      {
-        method: 'GET',
-        oldApi: true,
-      }
-    )
+    return (
+      await this._api.enqueue(
+        'projects/questions',
+        {},
+        {
+          method: 'GET',
+          oldApi: true,
+        }
+      )
+    ).response
   }
 
   /**
@@ -110,12 +115,16 @@ export default class Projects {
       throw new Error('No parameter provided, supported: ' + getParams)
     }
 
-    return new Remix(
-      await this._api.enqueue(`projects/${param}/remix`, params, {
+    const context: Context = await this._api.enqueue(
+      `projects/${param}/remix`,
+      params,
+      {
         method: 'POST',
         oldApi: true,
-      })
+      }
     )
+
+    return new Remix(context.response)
   }
 
   /**
@@ -124,9 +133,18 @@ export default class Projects {
    * @param params.id - Project ID
    * @param params.domain - Project domain
    */
-  async edit(params: Partial<{ id: string; domain: string }>): Promise<Editor> {
-    // @ts-ignore
-    const editor = new Editor(await this.get(params), this._api._glitch)
-    return editor
+  async edit(
+    params: Partial<{ id: string; domain: string }> | Project
+  ): Promise<Editor> {
+    if (params instanceof Project) {
+      /**
+       * We initialize editor with a project that
+       * was might have been already got and passed as the parameter
+       */
+      return new Editor(params, this._api._options.token)
+    } else {
+      /** Otherwise, we have to get the project */
+      return new Editor(await this.get(params), this._api._options.token)
+    }
   }
 }

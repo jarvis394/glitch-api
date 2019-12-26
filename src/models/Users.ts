@@ -1,5 +1,6 @@
 import User from '../structures/User'
 import API from './API'
+import Context from 'src/structures/Context'
 
 /** @hidden */
 const getParams = ['id', 'login']
@@ -36,16 +37,20 @@ export default class Users {
   ): Promise<User> {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))
 
-    const user: User = await this._api.enqueue(`users/by/${param}`, params, {
-      method: 'GET',
-    })
+    const context: Context = await this._api.enqueue(
+      `users/by/${param}`,
+      params,
+      {
+        method: 'GET',
+      }
+    )
 
-    if (Object.keys(user).length === 0) {
+    if (Object.keys(context.response).length === 0) {
       return null
     }
 
     // @ts-ignore
-    return new User(user[params[param]])
+    return new User(context.response[params[param]])
   }
 
   /**
@@ -55,15 +60,15 @@ export default class Users {
    * @param {string} params.q Query
    */
   async search(params: { q: string }): Promise<User[] | null> {
-    const users: User[] = await this._api.enqueue('users/search', params, {
+    const context: Context = await this._api.enqueue('users/search', params, {
       method: 'GET',
       oldApi: true,
     })
 
-    if (users.length === 0) {
+    if (context.response.length === 0) {
       return null
     } else {
-      return users.map(user => new User(user))
+      return context.response.map((user: User) => new User(user))
     }
   }
 }

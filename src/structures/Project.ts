@@ -83,7 +83,7 @@ export default class Project {
    * IDs of teams the project is in
    */
   teamIds?: number[]
-  constructor(options: Project) {
+  constructor(options: Partial<Project>) {
     this.id = options.id
     this.description = options.description
     this.domain = options.domain

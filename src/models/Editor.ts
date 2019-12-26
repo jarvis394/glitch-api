@@ -1,7 +1,7 @@
 import WebSocket from 'ws'
 import Project from '../structures/Project'
 import { WEBSOCKET_BASE_URL } from '../utils/constants'
-import Glitch from './Glitch'
+import Glitch, { IGlitchOptions } from './Glitch'
 
 /**
  * Glitch application's editor class
@@ -21,10 +21,9 @@ export default class Editor {
   public project: Project
 
   /**
-   * Private Glitch instance that used to retrieve token
-   * @private
+   * Glitch token that retrieves from the glitch instance
    */
-  private glitch: Glitch
+  public token: string
 
   /**
    * Socket connection
@@ -46,38 +45,43 @@ export default class Editor {
    */
   public messageHandler: any
 
-  constructor(project: Project, glitch: Glitch) {
+  constructor(project: Project, token: string) {
     if (!project)
       throw new Error(
         'No project was provided when tried to create new Editor instance'
       )
-    if (!glitch || (glitch && !glitch.token))
+    if (!token)
       throw new Error(
         'No token was provided when tried to create new Editor instance'
       )
-    
+
     this.project = project
-    this.glitch = glitch
-    this.socket = new WebSocket(`wss://api.glitch.com/${this.project.id}/ot?authorization=${this.glitch.token}`)
-    
-    this.errorHandler = (e: WebSocket.ErrorEvent) => { throw e.error }
+    this.token = token
+    this.socket = new WebSocket(
+      `${WEBSOCKET_BASE_URL}/${this.project.id}/ot?authorization=${this.token}`
+    )
+
+    this.errorHandler = (e: WebSocket.ErrorEvent) => {
+      throw e.error
+    }
     this.closeHandler = (event: WebSocket.CloseEvent) => event
-    this.messageHandler = (message: WebSocket.MessageEvent) => message 
+    this.messageHandler = (message: WebSocket.MessageEvent) => message
   }
 
   /**
    * Connects to the Glitch's project via WebSockets
    *
-   * For sockets library documentation,
-   * see [socket.io website](https://socket.io/docs/client-api/)
+   * Used `ws` library for connection
    */
   connect(): WebSocket {
-    const open = () => this.socket.send(
-      JSON.stringify({
-        type: 'master-state',
-        clientId: this.generateClientId(),
-        force: true,
-      }))
+    const open = () =>
+      this.socket.send(
+        JSON.stringify({
+          type: 'master-state',
+          clientId: this.generateClientId(),
+          force: true,
+        })
+      )
 
     this.socket.onopen = open
     this.socket.onerror = this.errorHandler.bind(this)

@@ -1,5 +1,6 @@
 import API from './API'
 import Team from '../structures/Team'
+import Context from 'src/structures/Context'
 
 /** @hidden */
 const getParams = ['url', 'id']
@@ -38,7 +39,7 @@ export default class Teams {
       throw new Error('No parameter provided, supported: ' + getParams)
     }
 
-    const team: Team | {} = await this._api.enqueue(
+    const context: Context = await this._api.enqueue(
       `teams/by/${param}`,
       params,
       {
@@ -46,12 +47,12 @@ export default class Teams {
       }
     )
 
-    if (Object.keys(team).length === 0) {
+    if (Object.keys(context.response).length === 0) {
       return null
     }
 
     // @ts-ignore
-    return new Team(team[params[param]])
+    return new Team(context.response[params[param]])
   }
 
   /**
@@ -61,15 +62,15 @@ export default class Teams {
    * @param {string} params.q Query
    */
   async search(params: { q: string }): Promise<Team[]> {
-    const teams = await this._api.enqueue('teams/search', params, {
+    const context: Context = await this._api.enqueue('teams/search', params, {
       method: 'GET',
       oldApi: true,
     })
 
-    if (teams.length === 0) {
+    if (context.response.length === 0) {
       return null
     }
 
-    return teams.map((team: Team) => new Team(team))
+    return context.response.map((team: Team) => new Team(team))
   }
 }

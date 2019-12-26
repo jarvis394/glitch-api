@@ -75,7 +75,7 @@ export default class Team {
    */
 
   features: Feature[]
-  constructor(options: Team) {
+  constructor(options: Partial<Team>) {
     this.id = options.id
     this.description = options.description
     this.url = options.url

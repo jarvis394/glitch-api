@@ -80,7 +80,7 @@ export default class User {
    * List of user's features
    */
   features: Feature[]
-  constructor(options: User) {
+  constructor(options: Partial<User>) {
     this.id = options.id
     this.login = options.login
     this.name = options.name

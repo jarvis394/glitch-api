@@ -68,7 +68,6 @@ export default class Glitch {
     apiInterval,
     compress,
   }: Partial<IGlitchOptions> = {}) {
-    this.api = new API(this)
     this.options = {
       token: token ? token.toString() : null,
       apiTimeout: apiTimeout || 10e3,
@@ -78,6 +77,7 @@ export default class Glitch {
       apiBaseUrlOld: apiBaseUrlOld || API_BASE_URL_OLD,
       compress: compress || true,
     }
+    this.api = new API(this.options)
   }
 
   /**
