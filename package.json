@@ -33,14 +33,14 @@
     "api"
   ],
   "devDependencies": {
-    "@types/jest": "^24.0.24",
-    "@types/node": "^12.12.21",
+    "@types/jest": "^24.0.25",
+    "@types/node": "^12.12.22",
     "@types/node-fetch": "^2.5.4",
     "@types/socket.io-client": "^1.4.32",
     "@types/ws": "^6.0.4",
     "awesome-typescript-loader": "^5.2.1",
     "bufferutil": "^4.0.1",
-    "eslint": "^6.7.2",
+    "eslint": "^6.8.0",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "jest": "^24.9.0",
@@ -51,7 +51,7 @@
     "ts-jest": "^24.2.0",
     "typedoc": "^0.15.5",
     "typedoc-webpack-plugin": "^1.1.4",
-    "typescript": "^3.7.3",
+    "typescript": "^3.7.4",
     "webpack": "^4.41.4",
     "webpack-cli": "^3.3.10"
   }
