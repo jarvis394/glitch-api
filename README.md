@@ -6,7 +6,7 @@
 
 A Node.js module that allows you to easily interact with the Glitch API
 
-| 📖 [Documentation](https://glapi.glitch.me/globals) | ✨ [Examples](https://github.com/jarvis394/glitch-api/tree/master/docs/examples/) |
+| 📖 [Documentation](https://glapi.ml/globals) | ✨ [Examples](https://github.com/jarvis394/glitch-api/tree/master/docs/examples/) |
 | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
 
 ## Features
