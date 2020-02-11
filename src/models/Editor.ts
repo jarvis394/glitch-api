@@ -7,7 +7,7 @@ import Glitch, { IGlitchOptions } from './Glitch'
  * Glitch application's editor class
  *
  * Connects to the project via WebSockets and provides full API of that project.
- * Firstly, you would need to invoke `Editor.connect()` functoin
+ * Firstly, you would need to invoke `Editor.connect()` function
  * in order to connect to the scokets.
  *
  * Then you would able to use any method avaliable on the
