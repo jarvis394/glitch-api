@@ -1,6 +1,6 @@
 {
   "name": "glitch-api",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Library for using Glitch API ⚙️",
   "main": "./lib/index.js",
   "scripts": {
@@ -19,7 +19,7 @@
   "engines": {
     "node": ">=8.0.0"
   },
-  "homepage": "https://glapi.glitch.me",
+  "homepage": "https://glapi.ml",
   "repository": {
     "url": "https://github.com/jarvis394/glitch-api/"
   },
