@@ -1,8 +1,8 @@
 ## glitch-api
 
-![GitHub package.json dynamic](https://img.shields.io/github/package-json/version/jarvis394/glitch-api)
+[![GitHub package.json dynamic](https://img.shields.io/github/package-json/version/jarvis394/glitch-api)](https://www.npmjs.com/package/glitch-api)
 [![CircleCI](https://circleci.com/gh/jarvis394/glitch-api/tree/master.svg?style=shield)](https://circleci.com/gh/jarvis394/glitch-api/tree/master)
-![npm bundle size](https://img.shields.io/bundlephobia/min/glitch-api?label=size)
+[![npm bundle size](https://img.shields.io/bundlephobia/min/glitch-api?label=size)](https://www.npmjs.com/package/glitch-api)
 
 A Node.js module that allows you to easily interact with the Glitch API
 
