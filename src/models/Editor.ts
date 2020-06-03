@@ -1,7 +1,6 @@
 import WebSocket from 'ws'
 import Project from '../structures/Project'
 import { WEBSOCKET_BASE_URL } from '../utils/constants'
-import Glitch, { IGlitchOptions } from './Glitch'
 
 /**
  * Glitch application's editor class
@@ -71,7 +70,7 @@ export default class Editor {
   /**
    * Connects to the Glitch's project via WebSockets
    *
-   * Used `ws` library for connection
+   * Uses `ws` library for connection
    */
   connect(): WebSocket {
     const open = () =>
@@ -104,7 +103,7 @@ export default class Editor {
    * Sets handler for websocket error event
    * @param f - Handler function
    */
-  setErrorHandler(f: any): this {
+  setErrorHandler(f: (event: WebSocket.ErrorEvent) => any): this {
     this.errorHandler = f
     this.socket.onerror = this.errorHandler.bind(this)
     return this
@@ -114,7 +113,7 @@ export default class Editor {
    * Sets handler for websocket close event
    * @param f - Handler function
    */
-  setCloseHandler(f: any): this {
+  setCloseHandler(f: (event: WebSocket.CloseEvent) => any): this {
     this.closeHandler = f
     this.socket.onclose = this.closeHandler.bind(this)
     return this
@@ -124,7 +123,7 @@ export default class Editor {
    * Sets handler for websocket message event
    * @param f - Handler function
    */
-  setMessageHandler(f: any): this {
+  setMessageHandler(f: (event: WebSocket.MessageEvent) => any): this {
     this.messageHandler = f
     this.socket.onmessage = this.messageHandler.bind(this)
     return this

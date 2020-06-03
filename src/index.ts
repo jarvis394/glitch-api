@@ -11,6 +11,9 @@ export { default as Member } from './structures/Member'
 export { default as Project } from './structures/Project'
 export { default as Team } from './structures/Team'
 export { default as User } from './structures/User'
-export { default as Remix } from './structures/Remix'
+export { default as SearchCreds } from './structures/SearchCreds'
+
+export { default as MemberOptions } from './interfaces/MemberOptions'
+export * as Requests from './interfaces/Requests'
 
 export * from './utils/constants'

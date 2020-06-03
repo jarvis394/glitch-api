@@ -17,3 +17,10 @@ export const WEBSOCKET_BASE_URL: string = 'wss://api.glitch.com'
  * Default interval between requests
  */
 export const API_TIME_INTERVAL: number = 0
+
+export const API_HEADERS = {
+  accept: 'application/json, text/plain, */*',
+  'accept-encoding': 'gzip, deflate, br',
+  'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
+  'content-length': 0,
+}

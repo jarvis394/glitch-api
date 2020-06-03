@@ -6,8 +6,9 @@ import { IRequestOptions, IRequestParams } from '../interfaces/Requests'
 import Users from './Users'
 import Projects from './Projects'
 import Teams from './Teams'
-import { IGlitchOptions } from './Glitch'
+import Glitch, { IGlitchOptions } from './Glitch'
 import Context from '../structures/Context'
+import SearchCreds from '../structures/SearchCreds'
 
 /**
  * API class
@@ -19,6 +20,12 @@ export default class API {
    * @hidden
    */
   _options: IGlitchOptions
+
+  /**
+   * Glitch instance
+   * @hidden
+   */
+  _glitch: Glitch
 
   /**
    * Requests queue
@@ -49,8 +56,9 @@ export default class API {
    * API constructor
    * @param glitchOptions - Glitch instance's options
    */
-  constructor(glitchOptions: IGlitchOptions) {
-    this._options = glitchOptions
+  constructor(glitch: Glitch) {
+    this._options = glitch.options
+    this._glitch = glitch
     this.queue = []
     this.working = false
     this.users = new Users(this)
@@ -108,7 +116,7 @@ export default class API {
     method: string,
     params: Record<string, any>,
     requestParams: Partial<IRequestParams>
-  ): Promise<Context> {
+  ): Promise<Context<any>> {
     const request = new Request(method, params, requestParams)
 
     return this.callWithRequest(request)
@@ -132,7 +140,7 @@ export default class API {
 
     let url: string = `${
       requestParams.oldApi ? apiBaseUrlOld : apiBaseUrl
-    }/${method}?`
+    }/${method}`
     let requestOptions: IRequestOptions = {
       method: requestParams.method || 'GET',
       compress: compress,
@@ -144,15 +152,25 @@ export default class API {
       },
     }
 
-    if (token) search.append('authorization', token)
+    if (token) {
+      search.append('authorization', token)
+      requestOptions.headers.authorization = token
+    }
 
-    if (requestParams.method === 'GET') url += search.toString()
+    if (requestParams.method === 'GET') url += '?' + search.toString()
     else requestOptions.body = search
+
+    if (this._options.debug)
+      console.debug('GLAPI: Fetching', method, requestParams)
 
     try {
       const resFetch: Response = await fetch(url, requestOptions)
       const resText = await resFetch.text()
-      const context: Context = new Context(resFetch, resText, requestOptions)
+      const context: Context<any> = new Context(
+        resFetch,
+        resText,
+        requestOptions
+      )
 
       if (context.error) {
         throw new Error(
@@ -164,5 +182,17 @@ export default class API {
     } catch (e) {
       return request.reject(e)
     }
+  }
+
+  async getSearchCreds(): Promise<SearchCreds> {
+    return (
+      await this.enqueue(
+        'search/creds',
+        {},
+        {
+          method: 'GET',
+        }
+      )
+    ).response
   }
 }

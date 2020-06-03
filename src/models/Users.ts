@@ -1,6 +1,8 @@
+import Algolia from 'algoliasearch'
 import User from '../structures/User'
 import API from './API'
-import Context from 'src/structures/Context'
+import Context from '../structures/Context'
+import SearchCreds from '../structures/SearchCreds'
 
 /** @hidden */
 const getParams = ['id', 'login']
@@ -37,7 +39,7 @@ export default class Users {
   ): Promise<User> {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))
 
-    const context: Context = await this._api.enqueue(
+    const context: Context<User> = await this._api.enqueue(
       `users/by/${param}`,
       params,
       {
@@ -54,21 +56,30 @@ export default class Users {
   }
 
   /**
-   * Search user by query
+   * Searches user by query
    *
-   * @param {Object} params
-   * @param {string} params.q Query
+   * @param {string} query - Query string
    */
-  async search(params: { q: string }): Promise<User[] | null> {
-    const context: Context = await this._api.enqueue('users/search', params, {
-      method: 'GET',
-      oldApi: true,
+  async search(query: string) {
+    if (!query || query.length < 1) {
+      throw new Error('No query parameter was provided')
+    }
+
+    if (!this._api._options.token) {
+      throw new Error('No token in Glitch instance was provided')
+    }
+
+    // Get credentials to perform Algolia requests
+    const creds = await this._api.getSearchCreds()
+    const client = Algolia(creds.id, creds.searchKey)
+    const index = client.initIndex('search_users')
+    const response = await index.search<User>(query, {
+      hitsPerPage: 100,
     })
 
-    if (context.response.length === 0) {
-      return null
-    } else {
-      return context.response.map((user: User) => new User(user))
+    return {
+      ...response,
+      hits: response.hits.map((user: User) => new User(user)),
     }
   }
 }

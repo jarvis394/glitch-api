@@ -1,6 +1,8 @@
+import Algolia from 'algoliasearch'
 import API from './API'
 import Team from '../structures/Team'
-import Context from 'src/structures/Context'
+import Context from '../structures/Context'
+import SearchCreds from '../structures/SearchCreds'
 
 /** @hidden */
 const getParams = ['url', 'id']
@@ -32,14 +34,16 @@ export default class Teams {
    * @param {string} params.url - Project URL
    * @param {string} params.id - Project ID
    */
-  async get(params: Partial<{ url: string; id: string }>): Promise<Team> {
+  async get(
+    params: Partial<{ url: string; id: string | number }>
+  ): Promise<Team> {
     const param = Object.keys(params).find(e => getParams.some(p => p === e))
 
     if (!param) {
       throw new Error('No parameter provided, supported: ' + getParams)
     }
 
-    const context: Context = await this._api.enqueue(
+    const context: Context<Team> = await this._api.enqueue(
       `teams/by/${param}`,
       params,
       {
@@ -56,21 +60,30 @@ export default class Teams {
   }
 
   /**
-   * Search team by query
+   * Searches team by query
    *
-   * @param {Object} params
-   * @param {string} params.q Query
+   * @param {string} query - Query string
    */
-  async search(params: { q: string }): Promise<Team[]> {
-    const context: Context = await this._api.enqueue('teams/search', params, {
-      method: 'GET',
-      oldApi: true,
-    })
-
-    if (context.response.length === 0) {
-      return null
+  async search(query: string) {
+    if (!query || query.length < 1) {
+      throw new Error('No query parameter was provided')
     }
 
-    return context.response.map((team: Team) => new Team(team))
+    if (!this._api._options.token) {
+      throw new Error('No token in Glitch instance was provided')
+    }
+
+    // Get credentials to perform Algolia requests
+    const creds = await this._api.getSearchCreds()
+    const client = Algolia(creds.id, creds.searchKey)
+    const index = client.initIndex('search_teams')
+    const response = await index.search<Team>(query, {
+      hitsPerPage: 100,
+    })
+
+    return {
+      ...response,
+      hits: response.hits.map((team: Team) => new Team(team)),
+    }
   }
 }

@@ -7,6 +7,8 @@ export interface IContextError {
   statusCode: number
   /** Error's message text */
   message: string
+  /** Request options */
+  requestOptions: IRequestOptions
 }
 
 /**
@@ -15,9 +17,9 @@ export interface IContextError {
  * Represents a context of an API response
  * @class
  */
-export default class Context {
+export default class Context<T> {
   /** API response */
-  response: any
+  response: T
   /** Requets object */
   request: Request
   /** Contains error that was got from Glitch API */
@@ -45,6 +47,10 @@ export default class Context {
 
     this.params = requestOptions
     if (!response.ok)
-      this.error = { statusCode: response.status, message: text }
+      this.error = {
+        statusCode: response.status,
+        message: text,
+        requestOptions,
+      }
   }
 }

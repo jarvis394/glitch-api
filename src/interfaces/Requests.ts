@@ -36,4 +36,8 @@ export interface IRequestParams {
    * Shows whether to use old API URL
    */
   oldApi: boolean
+  /**
+   * API base
+   */
+  apiBaseURL?: string
 }

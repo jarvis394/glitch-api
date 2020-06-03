@@ -3,7 +3,10 @@ import {
   API_BASE_URL,
   API_BASE_URL_OLD,
   API_TIME_INTERVAL,
+  API_HEADERS,
 } from '../utils/constants'
+import Context from '../structures/Context'
+import User from '../structures/User'
 
 export interface IGlitchOptions {
   /**
@@ -41,6 +44,12 @@ export interface IGlitchOptions {
    * @default true
    */
   compress: boolean
+
+  /**
+   * Output to the console debugging info
+   * @default false
+   */
+  debug: boolean
 }
 
 /**
@@ -67,17 +76,19 @@ export default class Glitch {
     apiBaseUrlOld,
     apiInterval,
     compress,
+    debug,
   }: Partial<IGlitchOptions> = {}) {
     this.options = {
       token: token ? token.toString() : null,
       apiTimeout: apiTimeout || 10e3,
       apiInterval: apiInterval || API_TIME_INTERVAL,
-      apiHeaders: apiHeaders || {},
+      apiHeaders: apiHeaders || API_HEADERS,
       apiBaseUrl: apiBaseUrl || API_BASE_URL,
       apiBaseUrlOld: apiBaseUrlOld || API_BASE_URL_OLD,
       compress: compress || true,
+      debug: debug || false,
     }
-    this.api = new API(this.options)
+    this.api = new API(this)
   }
 
   /**
@@ -100,6 +111,28 @@ export default class Glitch {
    */
   setToken(token: string): string {
     this.options.token = token
+    this.api = new API(this)
     return this.options.token
+  }
+
+  // TODO: Returns {"message":"Internal server error","code":"Unauthenticated"}
+  // Need to resolve this issue
+  //
+  /**
+   * Allows to set an anonymous user token
+   */
+  async setAnonToken() {
+    try {
+      const user: Context<User> = await this.api.enqueue(
+        'users/anon',
+        {},
+        { method: 'POST' }
+      )
+      const token = user.response.persistentToken
+      this.setToken(token)
+      return token
+    } catch (e) {
+      throw e
+    }
   }
 }

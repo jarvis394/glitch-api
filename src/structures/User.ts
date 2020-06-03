@@ -80,6 +80,23 @@ export default class User {
    * List of user's features
    */
   features: Feature[]
+  /**
+   * Users's persistent token
+   */
+  persistentToken?: string
+  googleId?: string
+  googleToken?: string
+  slackId?: string
+  slackToken?: string
+  slackTeamId?: string
+  facebookId?: string
+  facebookToken?: string
+  githubId?: string
+  githubToken?: string
+  passwordEnabled?: boolean
+  loginAttempts?: number
+  accountLocked?: boolean
+  twoFactorEnabled?: boolean
   constructor(options: Partial<User>) {
     this.id = options.id
     this.login = options.login

@@ -1,9 +1,8 @@
+import Algolia from 'algoliasearch'
 import API from './API'
-
 import Project from '../structures/Project'
-import Remix from '../structures/Remix'
 import Editor from '../models/Editor'
-import Context from 'src/structures/Context'
+import Context from '../structures/Context'
 
 /** @hidden */
 const getParams = ['id', 'domain']
@@ -42,7 +41,7 @@ export default class Projects {
       throw new Error('No parameter provided, supported: ' + getParams)
     }
 
-    const context: Context = await this._api.enqueue(
+    const context: Context<Project> = await this._api.enqueue(
       `projects/by/${param}`,
       params,
       {
@@ -61,28 +60,30 @@ export default class Projects {
   /**
    * Searches project by query
    *
-   * @param {Object} params
-   * @param {string} params.q Query
+   * @param {string} query - Query string
    */
-  async search(params: { q: string }) {
-    if (!params.q) {
-      throw new Error('No query parameter provided, supported: q')
+  async search(query: string) {
+    if (!query || query.length < 1) {
+      throw new Error('No query parameter was provided')
     }
 
-    const context: Context = await this._api.enqueue(
-      'projects/search',
-      params,
-      {
-        method: 'GET',
-        oldApi: true,
-      }
-    )
-
-    if (context.response.length === 0) {
-      return null
+    if (!this._api._options.token) {
+      throw new Error('No token in Glitch instance was provided')
     }
 
-    return context.response.map((project: Project) => new Project(project))
+    // Get credentials to perform Algolia requests
+    const creds = await this._api.getSearchCreds()
+    const client = Algolia(creds.id, creds.searchKey)
+    const index = client.initIndex('search_projects')
+    const response = await index.search<Project>(query, {
+      hitsPerPage: 100,
+      facetFilters: 'notSafeForKids:false',
+    })
+
+    return {
+      ...response,
+      hits: response.hits.map((project: Project) => new Project(project)),
+    }
   }
 
   /**
@@ -104,27 +105,22 @@ export default class Projects {
   /**
    * Remixes project
    *
-   * @param params
-   * @param params.id - Project ID
-   * @param params.domain - Project domain
+   * @param id - Project ID
    */
-  async remix(params: Partial<{ id: string; domain: string }>) {
-    const param = Object.keys(params).find(e => getParams.some(p => p === e))
-
-    if (!param) {
-      throw new Error('No parameter provided, supported: ' + getParams)
+  async remix(id: string) {
+    if (!id) {
+      throw new Error('No project id was provided')
     }
 
-    const context: Context = await this._api.enqueue(
-      `projects/${param}/remix`,
-      params,
+    const context: Context<Project> = await this._api.enqueue(
+      `projects/${id}/remix`,
+      {},
       {
         method: 'POST',
-        oldApi: true,
       }
     )
 
-    return new Remix(context.response)
+    return new Project(context.response)
   }
 
   /**
