@@ -14,6 +14,6 @@ export { default as User } from './structures/User'
 export { default as SearchCreds } from './structures/SearchCreds'
 
 export { default as MemberOptions } from './interfaces/MemberOptions'
-export * as Requests from './interfaces/Requests'
+export * from './interfaces/Requests'
 
 export * from './utils/constants'
