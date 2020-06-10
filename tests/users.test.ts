@@ -19,6 +19,11 @@ describe('Get users', () => {
 
     expect(res.login).toBe(LOGIN)
   })
+
+  it('should throw without param', () => {
+    expect(api.users.get(null)).rejects.toThrow()
+    expect(api.users.get({})).rejects.toThrow()
+  })
 })
 
 describe('Search users', () => {
@@ -27,5 +32,9 @@ describe('Search users', () => {
     const res = await api.users.search(LOGIN)
     
     expect(res).not.toBeNull()
+  })
+
+  it('should throw without param', () => {
+    expect(api.users.search(null)).rejects.toThrow()
   })
 })

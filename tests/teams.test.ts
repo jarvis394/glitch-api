@@ -19,6 +19,11 @@ describe('Get teams', () => {
 
     expect(res.id).toBe(ID)
   })
+
+  it('should throw without param', () => {
+    expect(() => api.teams.get(null)).rejects.toThrow()
+    expect(() => api.teams.get({})).rejects.toThrow()
+  })
 })
 
 describe('Search teams', () => {
@@ -27,5 +32,9 @@ describe('Search teams', () => {
     const res = await api.teams.search(_URL)
 
     expect(res).not.toBeNull()
+  })
+
+  it('should throw without param', () => {
+    expect(() => api.teams.search(null)).rejects.toThrow()
   })
 })

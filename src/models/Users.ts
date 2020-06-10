@@ -37,7 +37,8 @@ export default class Users {
   async get(
     params: Partial<{ id: string | number; login: string }>
   ): Promise<User> {
-    const param = Object.keys(params).find(e => getParams.some(p => p === e))
+    const param = Object.keys(params || {}).find(e => getParams.some(p => p === e))
+    if (!params || !param) throw new Error('No parameter provided, supported: ' + getParams)
 
     const context: Context<User> = await this._api.enqueue(
       `users/by/${param}`,

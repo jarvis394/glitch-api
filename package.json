@@ -1,6 +1,6 @@
 {
   "name": "glitch-api",
-  "version": "3.0.4",
+  "version": "3.1.0",
   "description": "Library for using Glitch API ⚙️",
   "main": "./lib/index.js",
   "scripts": {

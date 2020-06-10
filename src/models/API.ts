@@ -83,11 +83,8 @@ export default class API {
    * @private
    */
   private worker() {
-    if (this.working) {
-      return
-    }
-
-    this.working = true
+    if (this.working) return
+    else this.working = true
 
     const work = () => {
       if (this.queue.length === 0) {
@@ -177,6 +174,9 @@ export default class API {
           `[${context.error.statusCode}] On trying to execute ${method}: ${context.error.message}`
         )
       }
+
+      if (this._options.debug)
+        console.debug('GLAPI: Fetched', context)
 
       return request.resolve(context)
     } catch (e) {

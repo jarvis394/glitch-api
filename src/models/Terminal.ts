@@ -3,19 +3,14 @@ import Project from '../structures/Project'
 import { WEBSOCKET_BASE_URL } from '../utils/constants'
 
 /**
- * Glitch application's editor class
+ * Glitch project's terminal class
  *
- * Connects to the project via WebSockets and provides full API of that project.
- * Firstly, you would need to invoke `Editor.connect()` function
- * in order to connect to the scokets.
- *
- * Then you would able to use any method avaliable on the
- * Glitch's editor page in the `application` variable
+ * Connects to the project's terminal via WebSockets.
  * @class
  */
-export default class Editor {
+export default class Terminal {
   /**
-   * Project which editor would try to connect to
+   * Project which terminal would try to connect to
    */
   public project: Project
 
@@ -47,17 +42,17 @@ export default class Editor {
   constructor(project: Project, token: string) {
     if (!project)
       throw new Error(
-        'No project was provided when tried to create new Editor instance'
+        'No project was provided when tried to create new Terminal instance'
       )
     if (!token)
       throw new Error(
-        'No token was provided when tried to create new Editor instance'
+        'No token was provided when tried to create new Terminal instance'
       )
 
     this.project = project
     this.token = token
     this.socket = new WebSocket(
-      `${WEBSOCKET_BASE_URL}/${this.project.id}/ot?authorization=${this.token}`
+      `${WEBSOCKET_BASE_URL}/${this.project.domain}/console?authorization=${this.token}`
     )
 
     this.errorHandler = (e: WebSocket.ErrorEvent) => {
@@ -68,35 +63,16 @@ export default class Editor {
   }
 
   /**
-   * Connects to the Glitch's project via WebSockets
+   * Connects to the Glitch project's terminal via WebSockets
    *
    * Uses `ws` library for connection
    */
   connect(): WebSocket {
-    const open = () =>
-      this.socket.send(
-        JSON.stringify({
-          type: 'master-state',
-          clientId: Editor.generateClientId(),
-          force: true,
-        })
-      )
-
-    this.socket.onopen = open
     this.socket.onerror = this.errorHandler.bind(this)
     this.socket.onclose = this.closeHandler.bind(this)
     this.socket.onmessage = this.messageHandler.bind(this)
     
     return this.socket
-  }
-
-  /**
-   * Generates a 10 symbols random string which is used as client ID
-   */
-  static generateClientId(): string {
-    return [...Array(10)]
-      .map(_ => (~~(Math.random() * 36)).toString(36))
-      .join('')
   }
 
   /**

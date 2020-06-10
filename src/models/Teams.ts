@@ -2,7 +2,6 @@ import Algolia from 'algoliasearch'
 import API from './API'
 import Team from '../structures/Team'
 import Context from '../structures/Context'
-import SearchCreds from '../structures/SearchCreds'
 
 /** @hidden */
 const getParams = ['url', 'id']
@@ -37,11 +36,8 @@ export default class Teams {
   async get(
     params: Partial<{ url: string; id: string | number }>
   ): Promise<Team> {
-    const param = Object.keys(params).find(e => getParams.some(p => p === e))
-
-    if (!param) {
-      throw new Error('No parameter provided, supported: ' + getParams)
-    }
+    const param = Object.keys(params || {}).find(e => getParams.some(p => p === e))
+    if (!params || !param) throw new Error('No parameter provided, supported: ' + getParams)
 
     const context: Context<Team> = await this._api.enqueue(
       `teams/by/${param}`,

@@ -5,6 +5,8 @@ export { default as Teams } from './models/Teams'
 export { default as Users } from './models/Users'
 export { default as Request } from './models/Request'
 export { default as Editor } from './models/Editor'
+export { default as Logs } from './models/Logs'
+export { default as Terminal } from './models/Terminal'
 
 export { default as Feature } from './structures/Feature'
 export { default as Member } from './structures/Member'

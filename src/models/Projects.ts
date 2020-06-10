@@ -3,6 +3,8 @@ import API from './API'
 import Project from '../structures/Project'
 import Editor from '../models/Editor'
 import Context from '../structures/Context'
+import Logs from './Logs'
+import Terminal from './Terminal'
 
 /** @hidden */
 const getParams = ['id', 'domain']
@@ -35,11 +37,8 @@ export default class Projects {
   async get(
     params: Partial<{ id: string; domain: string }>
   ): Promise<Project | null> {
-    const param = Object.keys(params).find(e => getParams.some(p => p === e))
-
-    if (!param) {
-      throw new Error('No parameter provided, supported: ' + getParams)
-    }
+    const param = Object.keys(params || {}).find(e => getParams.some(p => p === e))
+    if (!params || !param) throw new Error('No parameter provided, supported: ' + getParams)
 
     const context: Context<Project> = await this._api.enqueue(
       `projects/by/${param}`,
@@ -63,7 +62,7 @@ export default class Projects {
    * @param {string} query - Query string
    */
   async search(query: string) {
-    if (!query || query.length < 1) {
+    if (!query) {
       throw new Error('No query parameter was provided')
     }
 
@@ -141,6 +140,48 @@ export default class Projects {
     } else {
       /** Otherwise, we have to get the project */
       return new Editor(await this.get(params), this._api._options.token)
+    }
+  }
+
+  /**
+   * Connects to the project logs
+   * @param params
+   * @param params.id - Project ID
+   * @param params.domain - Project domain
+   */
+  async logs(
+    params: Partial<{ id: string; domain: string }> | Project
+  ): Promise<Editor> {
+    if (params instanceof Project) {
+      /**
+       * We initialize logs class with a project that
+       * was might have been already got and passed as the parameter
+       */
+      return new Logs(params, this._api._options.token)
+    } else {
+      /** Otherwise, we have to get the project */
+      return new Logs(await this.get(params), this._api._options.token)
+    }
+  }
+
+  /**
+   * Connects to the project logs
+   * @param params
+   * @param params.id - Project ID
+   * @param params.domain - Project domain
+   */
+  async terminal(
+    params: Partial<{ id: string; domain: string }> | Project
+  ): Promise<Editor> {
+    if (params instanceof Project) {
+      /**
+       * We initialize terminal class with a project that
+       * was might have been already got and passed as the parameter
+       */
+      return new Terminal(params, this._api._options.token)
+    } else {
+      /** Otherwise, we have to get the project */
+      return new Terminal(await this.get(params), this._api._options.token)
     }
   }
 }
